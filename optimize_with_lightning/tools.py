@@ -2,6 +2,57 @@ import torch
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets, transforms
 
+from typing import Any
+
+import lightning as L
+import torch.nn.functional as F
+import torchmetrics
+
+class LightningModel(L.LightningModule):
+
+    def __init__(self, model, learning_rate):
+
+        super().__init__()
+
+        self._learning_rate = learning_rate
+        self._model = model
+        self._train_acc = torchmetrics.Accuracy(task="multiclass", num_classes=10)
+        self._val_acc = torchmetrics.Accuracy(task="multiclass", num_classes=10)
+        self._test_acc = torchmetrics.Accuracy(task="multiclass", num_classes=10)
+
+    def _shared_step(self, batch):
+        features, true_labels = batch
+        logits = self(features)
+        loss = F.cross_entropy(logits, true_labels)
+
+        predicted_labels = torch.argmax(logits, dim=1)
+
+        return loss, true_labels, predicted_labels
+    def forward(self, x) -> Any:
+        return self._model(x)
+
+    def training_step(self, batch, batch_idx):
+
+        loss, true_labels, predicted_labels = self._shared_step(batch)
+        self._train_acc(predicted_labels, true_labels)
+        self.log("train_acc", self._train_acc, prog_bar=True, on_epoch=True, on_step=False)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        loss, true_labels, predicted_labels = self._shared_step(batch)
+        self._val_acc(predicted_labels, true_labels)
+        self.log("val_acc", self._val_acc, prog_bar=True)
+
+    def test_step(self, batch, batch_idx):
+        loss, true_labels, predicted_labels = self._shared_step(batch)
+        self._test_acc(predicted_labels, true_labels)
+        self.log("test_acc", self._test_acc, prog_bar=False)
+
+    def configure_optimizers(self):
+        optimizer = torch.optim.SGD(self.parameters(), lr=self._learning_rate)
+        return optimizer
+
+
 
 class PyTorchMLP(torch.nn.Module):
     def __init__(self, num_features, num_classes):
@@ -22,6 +73,44 @@ class PyTorchMLP(torch.nn.Module):
         x = torch.flatten(x, start_dim=1)
         logits = self.all_layers(x)
         return logits
+
+
+class MNISTDataModule(L.LightningDataModule):
+    def __init__(self, data_dir="./mnist", batch_size=64):
+        super().__init__()
+        self._data_dir = data_dir
+        self._batch_size = batch_size
+
+    def prepare_data(self):
+        # download
+        datasets.MNIST(self._data_dir, train=True, download=True)
+        datasets.MNIST(self._data_dir, train=False, download=True)
+
+    def setup(self, stage: str):
+        self.mnist_test = datasets.MNIST(
+            self._data_dir, transform=transforms.ToTensor(), train=False
+        )
+        self.mnist_predict = datasets.MNIST(
+            self._data_dir, transform=transforms.ToTensor(), train=False
+        )
+        mnist_full = datasets.MNIST(
+            self._data_dir, transform=transforms.ToTensor(), train=True
+        )
+        self.mnist_train, self.mnist_val = random_split(mnist_full, [55000, 5000])
+
+    def train_dataloader(self):
+        return DataLoader(
+            self.mnist_train, batch_size=self._batch_size, shuffle=True, drop_last=True
+        )
+
+    def val_dataloader(self):
+        return DataLoader(self.mnist_val, batch_size=self._batch_size, shuffle=False)
+
+    def test_dataloader(self):
+        return DataLoader(self.mnist_test, batch_size=self._batch_size, shuffle=False)
+
+    def predict_dataloader(self):
+        return DataLoader(self.mnist_predict, batch_size=self._batch_size, shuffle=False)
 
 
 def get_dataset_loaders():
