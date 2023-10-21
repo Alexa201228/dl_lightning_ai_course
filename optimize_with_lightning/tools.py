@@ -16,6 +16,7 @@ class LightningModel(L.LightningModule):
 
         self._learning_rate = learning_rate
         self._model = model
+        self.save_hyperparameters(ignore=["model"])
         self._train_acc = torchmetrics.Accuracy(task="multiclass", num_classes=10)
         self._val_acc = torchmetrics.Accuracy(task="multiclass", num_classes=10)
         self._test_acc = torchmetrics.Accuracy(task="multiclass", num_classes=10)
@@ -34,12 +35,14 @@ class LightningModel(L.LightningModule):
     def training_step(self, batch, batch_idx):
 
         loss, true_labels, predicted_labels = self._shared_step(batch)
+        self.log("train_loss", loss)
         self._train_acc(predicted_labels, true_labels)
         self.log("train_acc", self._train_acc, prog_bar=True, on_epoch=True, on_step=False)
         return loss
 
     def validation_step(self, batch, batch_idx):
         loss, true_labels, predicted_labels = self._shared_step(batch)
+        self.log("val_loss", loss, prog_bar=True)
         self._val_acc(predicted_labels, true_labels)
         self.log("val_acc", self._val_acc, prog_bar=True)
 
@@ -51,7 +54,6 @@ class LightningModel(L.LightningModule):
     def configure_optimizers(self):
         optimizer = torch.optim.SGD(self.parameters(), lr=self._learning_rate)
         return optimizer
-
 
 
 class PyTorchMLP(torch.nn.Module):

@@ -20,6 +20,7 @@ if __name__ == "__main__":
         accelerator="auto",
         devices=1,
         deterministic=True,
+        default_root_dir="logs"
     )
 
     # trainer.fit(
