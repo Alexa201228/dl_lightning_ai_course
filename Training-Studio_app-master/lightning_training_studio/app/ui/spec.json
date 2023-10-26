@@ -1,0 +1,730 @@
+{
+  "openapi": "3.0.2",
+  "info": { "title": "FastAPI", "version": "0.1.0" },
+  "paths": {
+    "/api/v1/state": {
+      "get": {
+        "summary": "Get State",
+        "operationId": "get_state_api_v1_state_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Type", "type": "string" },
+            "name": "x-lightning-type",
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Session-Uuid", "type": "string" },
+            "name": "x-lightning-session-uuid",
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Session-Id", "type": "string" },
+            "name": "x-lightning-session-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      },
+      "post": {
+        "summary": "Post State",
+        "operationId": "post_state_api_v1_state_post",
+        "parameters": [
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Type", "type": "string" },
+            "name": "x-lightning-type",
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Session-Uuid", "type": "string" },
+            "name": "x-lightning-session-uuid",
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Session-Id", "type": "string" },
+            "name": "x-lightning-session-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/layout": {
+      "get": {
+        "summary": "Get Layout",
+        "operationId": "get_layout_api_v1_layout_get",
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } }
+        }
+      }
+    },
+    "/api/v1/spec": {
+      "get": {
+        "summary": "Get Spec",
+        "operationId": "get_spec_api_v1_spec_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Session-Uuid", "type": "string" },
+            "name": "x-lightning-session-uuid",
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Session-Id", "type": "string" },
+            "name": "x-lightning-session-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/delta": {
+      "post": {
+        "summary": "Post Delta",
+        "description": "This endpoint is used to make an update to the app state using delta diff, mainly used by streamlit to\nupdate the state.",
+        "operationId": "post_delta_api_v1_delta_post",
+        "parameters": [
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Type", "type": "string" },
+            "name": "x-lightning-type",
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Session-Uuid", "type": "string" },
+            "name": "x-lightning-session-uuid",
+            "in": "header"
+          },
+          {
+            "required": false,
+            "schema": { "title": "X-Lightning-Session-Id", "type": "string" },
+            "name": "x-lightning-session-id",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/upload_file/{filename}": {
+      "put": {
+        "summary": "Upload File",
+        "operationId": "upload_file_api_v1_upload_file__filename__put",
+        "parameters": [
+          { "required": true, "schema": { "title": "Filename", "type": "string" }, "name": "filename", "in": "path" }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/Body_upload_file_api_v1_upload_file__filename__put" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "summary": "Healthz",
+        "description": "Health check endpoint used in the cloud FastAPI servers to check the status periodically.",
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } }
+        }
+      }
+    },
+    "/api/run/tensorboard": {
+      "post": {
+        "tags": ["app_api"],
+        "summary": "Run Tensorboard",
+        "operationId": "run_tensorboard_api_run_tensorboard_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TensorboardConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/api/stop/tensorboard": {
+      "post": {
+        "tags": ["app_api"],
+        "summary": "Stop Tensorboard",
+        "operationId": "stop_tensorboard_api_stop_tensorboard_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StopTensorboardConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/api/show/tensorboards": {
+      "post": {
+        "tags": ["app_api"],
+        "summary": "Show Tensorboards",
+        "operationId": "show_tensorboards_api_show_tensorboards_post",
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } }
+        }
+      }
+    },
+    "/command/delete_sweep": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Delete Sweep",
+        "description": "To delete a sweep, note that the artifacts will still be available after the operation is complete.",
+        "operationId": "delete_sweep_command_delete_sweep_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DeleteSweepConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "cls_name": "DeleteSweepCommand",
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/sweep/delete.py"
+      }
+    },
+    "/command/run_sweep": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Run Sweep",
+        "description": "\n        To run a sweep, provide a script, the cloud compute to use, and an optional data.\n        Hyperparameters can be provided as lists or using distributions. Hydra multirun syntax is also supported.\n    ",
+        "operationId": "run_sweep_command_run_sweep_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SweepConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "requirements": ["traitlets", "lightning_training_studio"],
+        "cls_name": "RunSweepCommand",
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/sweep/run.py"
+      }
+    },
+    "/command/show_sweeps": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Show Sweeps",
+        "description": "To show all sweeps and their statuses, or the experiments for a given sweep.",
+        "operationId": "show_sweeps_command_show_sweeps_post",
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } }
+        },
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/sweep/show.py",
+        "cls_name": "ShowSweepsCommand"
+      }
+    },
+    "/command/stop_sweep": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Stop Sweep",
+        "description": "To stop all experiments in a sweep, note that currently sweeps cannot be resumed.",
+        "operationId": "stop_sweep_command_stop_sweep_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StopSweepConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "cls_name": "StopSweepCommand",
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/sweep/stop.py"
+      }
+    },
+    "/command/run_experiment": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Run Experiment",
+        "description": "To run an experiment, provide a script, the cloud compute to use, and optional data.",
+        "operationId": "run_experiment_command_run_experiment_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/SweepConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "cls_name": "RunExperimentCommand",
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/experiment/run.py"
+      }
+    },
+    "/command/stop_experiment": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Stop Experiment",
+        "description": "To stop an experiment, note that currently experiments cannot be resumed.",
+        "operationId": "stop_experiment_command_stop_experiment_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/StopExperimentConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "cls_name": "StopExperimentCommand",
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/experiment/stop.py"
+      }
+    },
+    "/command/show_experiments": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Show Experiments",
+        "description": "To show experiments and their statuses.",
+        "operationId": "show_experiments_command_show_experiments_post",
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } }
+        },
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/experiment/show.py",
+        "cls_name": "ShowExperimentsCommand"
+      }
+    },
+    "/command/delete_experiment": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Delete Experiment",
+        "description": "To delete an experiment. The artifacts are still available after the operation is complete.",
+        "operationId": "delete_experiment_command_delete_experiment_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DeleteExperimentConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "cls_name": "DeleteExperimentCommand",
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/experiment/delete.py"
+      }
+    },
+    "/command/show_artifacts": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Show Artifacts",
+        "description": "To show artifacts for experiments or sweeps.",
+        "operationId": "show_artifacts_command_show_artifacts_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ShowArtifactsConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "cls_name": "ShowArtifactsCommand",
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/artifacts/show.py"
+      }
+    },
+    "/command/download_artifacts": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Download Artifacts",
+        "description": "Download artifacts for experiments or sweeps.",
+        "operationId": "download_artifacts_command_download_artifacts_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DownloadArtifactsConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "cls_name": "DownloadArtifactsCommand",
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/artifacts/download.py"
+      }
+    },
+    "/command/add_dataset": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Add Dataset",
+        "description": "\n    To create a data association, provide a public S3 bucket and an optional mount point.\n    The contents of the bucket can then be accessed through the file system in experiments and sweeps.\n    ",
+        "operationId": "add_dataset_command_add_dataset_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DataConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "cls_name": "AddDatasetCommand",
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/data/create.py"
+      }
+    },
+    "/command/remove_dataset": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Remove Dataset",
+        "description": "To delete a data association, note this doesn't delete the data, but only the reference.",
+        "operationId": "remove_dataset_command_remove_dataset_post",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DeleteDataConfig" } } },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        },
+        "cls_name": "RemoveDatasetCommand",
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/data/delete.py"
+      }
+    },
+    "/command/show_datasets": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Show Datasets",
+        "description": "To list all data associations.",
+        "operationId": "show_datasets_command_show_datasets_post",
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } }
+        },
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/data/show.py",
+        "cls_name": "ShowDatasetsCommand"
+      }
+    },
+    "/command/show_logs": {
+      "post": {
+        "tags": ["app_client_command"],
+        "summary": "Show Logs",
+        "description": "To show the logs of an experiment or sweep, use the option to follow the logs as they stream.",
+        "operationId": "show_logs_command_show_logs_post",
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } }
+        },
+        "cls_path": "/Users/thomas/Documents/Github/lightning-hpo/lightning_training_studio/commands/logs/show.py",
+        "cls_name": "ShowLogsCommand"
+      }
+    },
+    "/api{full_path}": {
+      "get": {
+        "summary": "Api Catch All",
+        "operationId": "api_catch_all_api_full_path__get",
+        "parameters": [
+          { "required": true, "schema": { "title": "Full Path", "type": "string" }, "name": "full_path", "in": "path" }
+        ],
+        "responses": {
+          "200": { "description": "Successful Response", "content": { "application/json": { "schema": {} } } },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    },
+    "/{full_path}": {
+      "get": {
+        "summary": "Frontend Route",
+        "operationId": "frontend_route__full_path__get",
+        "parameters": [
+          { "required": true, "schema": { "title": "Full Path", "type": "string" }, "name": "full_path", "in": "path" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "text/html": { "schema": { "type": "string" } } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/HTTPValidationError" } } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_upload_file_api_v1_upload_file__filename__put": {
+        "title": "Body_upload_file_api_v1_upload_file__filename__put",
+        "required": ["uploaded_file"],
+        "type": "object",
+        "properties": { "uploaded_file": { "title": "Uploaded File", "type": "string", "format": "binary" } }
+      },
+      "DataConfig": {
+        "title": "DataConfig",
+        "required": ["name", "source", "mount_path"],
+        "type": "object",
+        "properties": {
+          "name": { "title": "Name", "type": "string" },
+          "source": { "title": "Source", "type": "string" },
+          "mount_path": { "title": "Mount Path", "type": "string" }
+        }
+      },
+      "DeleteDataConfig": {
+        "title": "DeleteDataConfig",
+        "required": ["name"],
+        "type": "object",
+        "properties": { "name": { "title": "Name", "type": "string" } }
+      },
+      "DeleteExperimentConfig": {
+        "title": "DeleteExperimentConfig",
+        "required": ["name"],
+        "type": "object",
+        "properties": { "name": { "title": "Name", "type": "string" } }
+      },
+      "DeleteSweepConfig": {
+        "title": "DeleteSweepConfig",
+        "required": ["name"],
+        "type": "object",
+        "properties": { "name": { "title": "Name", "type": "string" } }
+      },
+      "Distributions": {
+        "title": "Distributions",
+        "required": ["distribution", "params"],
+        "type": "object",
+        "properties": {
+          "distribution": { "title": "Distribution", "type": "string" },
+          "params": {
+            "title": "Params",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                { "type": "number" },
+                { "type": "integer" },
+                { "type": "string" },
+                { "type": "array", "items": { "type": "number" } },
+                { "type": "array", "items": { "type": "string" } }
+              ]
+            }
+          }
+        }
+      },
+      "DownloadArtifactsConfig": {
+        "title": "DownloadArtifactsConfig",
+        "type": "object",
+        "properties": {
+          "include": { "title": "Include", "type": "string" },
+          "exclude": { "title": "Exclude", "type": "string" }
+        }
+      },
+      "ExperimentConfig": {
+        "title": "ExperimentConfig",
+        "required": ["name", "params"],
+        "type": "object",
+        "properties": {
+          "name": { "title": "Name", "type": "string" },
+          "best_model_score": { "title": "Best Model Score", "type": "number" },
+          "monitor": { "title": "Monitor", "type": "string" },
+          "best_model_path": { "title": "Best Model Path", "type": "string" },
+          "last_model_path": { "title": "Last Model Path", "type": "string" },
+          "stage": { "title": "Stage", "type": "string", "default": "not_started" },
+          "params": {
+            "title": "Params",
+            "type": "object",
+            "additionalProperties": {
+              "anyOf": [
+                { "type": "number" },
+                { "type": "integer" },
+                { "type": "string" },
+                { "type": "array", "items": { "type": "number" } },
+                { "type": "array", "items": { "type": "string" } }
+              ]
+            }
+          },
+          "exception": { "title": "Exception", "type": "string" },
+          "progress": { "title": "Progress", "type": "number" },
+          "total_parameters": { "title": "Total Parameters", "type": "string" },
+          "start_time": { "title": "Start Time", "type": "string" },
+          "end_time": { "title": "End Time", "type": "string" }
+        }
+      },
+      "HTTPValidationError": {
+        "title": "HTTPValidationError",
+        "type": "object",
+        "properties": {
+          "detail": { "title": "Detail", "type": "array", "items": { "$ref": "#/components/schemas/ValidationError" } }
+        }
+      },
+      "ShowArtifactsConfig": {
+        "title": "ShowArtifactsConfig",
+        "type": "object",
+        "properties": {
+          "include": { "title": "Include", "type": "string" },
+          "exclude": { "title": "Exclude", "type": "string" }
+        }
+      },
+      "StopExperimentConfig": {
+        "title": "StopExperimentConfig",
+        "required": ["name"],
+        "type": "object",
+        "properties": { "name": { "title": "Name", "type": "string" } }
+      },
+      "StopSweepConfig": {
+        "title": "StopSweepConfig",
+        "required": ["sweep_id"],
+        "type": "object",
+        "properties": { "sweep_id": { "title": "Sweep Id", "type": "string" } }
+      },
+      "StopTensorboardConfig": {
+        "title": "StopTensorboardConfig",
+        "required": ["sweep_id"],
+        "type": "object",
+        "properties": { "sweep_id": { "title": "Sweep Id", "type": "string" } }
+      },
+      "SweepConfig": {
+        "title": "SweepConfig",
+        "required": [
+          "sweep_id",
+          "script_path",
+          "total_experiments",
+          "parallel_experiments",
+          "requirements",
+          "packages",
+          "script_args",
+          "algorithm",
+          "distributions",
+          "experiments",
+          "framework",
+          "logger",
+          "direction",
+          "data"
+        ],
+        "type": "object",
+        "properties": {
+          "sweep_id": { "title": "Sweep Id", "type": "string" },
+          "script_path": { "title": "Script Path", "type": "string" },
+          "total_experiments": { "title": "Total Experiments", "type": "integer" },
+          "parallel_experiments": { "title": "Parallel Experiments", "type": "integer" },
+          "total_experiments_done": { "title": "Total Experiments Done", "type": "integer", "default": 0 },
+          "requirements": { "title": "Requirements", "type": "array", "items": { "type": "string" } },
+          "packages": { "title": "Packages", "type": "array", "items": { "type": "string" } },
+          "script_args": { "title": "Script Args", "type": "array", "items": { "type": "string" } },
+          "algorithm": { "title": "Algorithm", "type": "string" },
+          "distributions": {
+            "title": "Distributions",
+            "type": "object",
+            "additionalProperties": { "$ref": "#/components/schemas/Distributions" }
+          },
+          "logger_url": { "title": "Logger Url", "type": "string", "default": "" },
+          "experiments": {
+            "title": "Experiments",
+            "type": "object",
+            "additionalProperties": { "$ref": "#/components/schemas/ExperimentConfig" }
+          },
+          "framework": { "title": "Framework", "type": "string" },
+          "cloud_compute": { "title": "Cloud Compute", "type": "string", "default": "cpu" },
+          "num_nodes": { "title": "Num Nodes", "type": "integer", "default": 1 },
+          "artifacts_path": { "title": "Artifacts Path", "type": "string" },
+          "logger": { "title": "Logger", "type": "string" },
+          "direction": { "title": "Direction", "type": "string" },
+          "stage": { "title": "Stage", "type": "string", "default": "not_started" },
+          "desired_stage": { "title": "Desired Stage", "type": "string", "default": "running" },
+          "shm_size": { "title": "Shm Size", "type": "integer", "default": 1024 },
+          "disk_size": { "title": "Disk Size", "type": "integer", "default": 80 },
+          "pip_install_source": { "title": "Pip Install Source", "type": "boolean", "default": false },
+          "data": { "title": "Data", "type": "object", "additionalProperties": { "type": "string" } },
+          "username": { "title": "Username", "type": "string" }
+        }
+      },
+      "TensorboardConfig": {
+        "title": "TensorboardConfig",
+        "required": ["sweep_id", "shared_folder"],
+        "type": "object",
+        "properties": {
+          "sweep_id": { "title": "Sweep Id", "type": "string" },
+          "shared_folder": { "title": "Shared Folder", "type": "string" },
+          "stage": { "title": "Stage", "type": "string", "default": "not_started" },
+          "desired_stage": { "title": "Desired Stage", "type": "string", "default": "running" },
+          "url": { "title": "Url", "type": "string", "default": "" }
+        }
+      },
+      "ValidationError": {
+        "title": "ValidationError",
+        "required": ["loc", "msg", "type"],
+        "type": "object",
+        "properties": {
+          "loc": {
+            "title": "Location",
+            "type": "array",
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] }
+          },
+          "msg": { "title": "Message", "type": "string" },
+          "type": { "title": "Error Type", "type": "string" }
+        }
+      }
+    }
+  }
+}
