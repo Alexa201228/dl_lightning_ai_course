@@ -123,30 +123,44 @@ class MnistDataModule(L.LightningDataModule):
 
 class Cifar10DataModule(L.LightningDataModule):
     def __init__(
-        self, data_path="./", batch_size=64, num_workers=0, height_width=(32, 32)
+        self,
+        data_path="./",
+        batch_size=64,
+        height_width=None,
+        num_workers=0,
+        train_transform=None,
+        test_transform=None,
     ):
         super().__init__()
         self.batch_size = batch_size
         self.data_path = data_path
         self.num_workers = num_workers
+        self.train_transform = train_transform
+        self.test_transform = test_transform
         self.height_width = height_width
 
     def prepare_data(self):
         datasets.CIFAR10(root=self.data_path, download=True)
 
-        self.train_transform = transforms.Compose(
-            [
-                transforms.Resize(self.height_width),
-                transforms.ToTensor(),
-            ]
-        )
+        if self.height_width is None:
+            self.height_width = (32, 32)
 
-        self.test_transform = transforms.Compose(
-            [
-                transforms.Resize(self.height_width),
-                transforms.ToTensor(),
-            ]
-        )
+        if self.train_transform is None:
+            self.train_transform = transforms.Compose(
+                [
+                    transforms.Resize(self.height_width),
+                    transforms.ToTensor(),
+                ]
+            )
+
+        if self.test_transform is None:
+            self.test_transform = transforms.Compose(
+                [
+                    transforms.Resize(self.height_width),
+                    transforms.ToTensor(),
+                ]
+            )
+
         return
 
     def setup(self, stage=None):
